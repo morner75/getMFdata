@@ -4,12 +4,12 @@
 \name{getMFdata-package}
 \alias{getMFdata}
 \alias{getMFdata-package}
-\title{getMFdata: What the Package Does (One Line, Title Case)}
+\title{getMFdata: Retrieving data from BOK, IMF, OECD, BIS, etc. through official APIs}
 \description{
-What the package does (one paragraph).
+This package retrieves official statistics from the Bank of Korea (BOK) and Financial Supervisory Service (FSS) in South Korea and international organisation including OCED, BIS and IMF.
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Junho Lee \email{morner@fss.or.kr}
 
 }
 \keyword{internal}

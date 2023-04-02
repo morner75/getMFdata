@@ -1,10 +1,9 @@
 Package: getMFdata
-Title: What the Package Does (One Line, Title Case)
+Title: Retrieving data from BOK, IMF, OECD, BIS, etc. through official APIs
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Junho", "Lee", , "morner@fss.or.kr", role = c("aut", "cre"))
+Description: This package retrieves official statistics from the Bank of Korea (BOK) and Financial Supervisory Service (FSS) in South Korea and international organisation including OCED, BIS and IMF. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
