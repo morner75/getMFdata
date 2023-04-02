@@ -115,12 +115,6 @@ getEcosCode <- function(ECOS_key=ECOS_key,STAT_CODE,lang="kr"){
 #'
 #' @return A tibble containing the matching statistical codes
 #'
-#' @importFrom magrittr multiply_by
-#' @importFrom dplyr filter distinct
-#' @importFrom purrr map reduce
-#' @import stringr
-#' @import tibble
-#'
 #' @export
 ecosSearch <- function(x) {
   data <- readRDS("Rdata/EcosStatsList.rds")

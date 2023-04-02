@@ -16,8 +16,12 @@ Imports:
     lubridate,
     magrittr,
     purrr,
+    readr,
+    rvest,
     stringr,
     tibble,
+    utils,
+    xml2,
     zoo
 Suggests: 
     testthat (>= 3.0.0)
