@@ -10,8 +10,8 @@
 #'
 #'
 #' @export
-getOecdDB <- function(url,startTime){
-  OECDDB_url <- paste0(url,"?startTime=",startTime)
+getOecdDB <- function(url){
+  OECDDB_url <- paste0(url)
   html <- GET(OECDDB_url)
   res <- rawToChar(html$content)
   Encoding(res) <- "UTF-8"
