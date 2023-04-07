@@ -6,8 +6,10 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
+### Retrieving macro-financial data from offical APIs
+
 The goal of `getMFdata` package is to provide a tool of facilitating
-**retrieving Macro-Finance data from official APIs** in Korea’s public
+retrieving Macro-Finance data from official APIs in Korea’s public
 institutions and international orgainisations. Currently, the package
 consist of main wrapper functions for connecting **ECOS** (Bank of
 Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics
@@ -21,7 +23,7 @@ Supervisory Service to fetch macroeconomic data for stress-testing. This
 package is still under development and aims to take a balance between
 ease to use and flexibility to accommodate varioous data structures.
 
-## Installation
+### Installation
 
 You can install the development version of getMFdata like so:
 
@@ -30,7 +32,7 @@ library(devtools)
 install_github("morner75/getMFdata")
 ```
 
-## Example
+### Example
 
 The following are basic examples which show you how to retrieve data
 from BOK and BIS sources. Some sources requires your API authentication
