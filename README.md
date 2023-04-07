@@ -8,16 +8,18 @@
 
 The goal of `getMFdata` package is to provide a tool of facilitating
 **retrieving Macro-Finance data from official APIs** in Korea’s public
-institutions and international orgainisations. This package was
-initially developed for internal use in Financial Supervisory Service to
-fetch macroeconomic data for stress-testing. Currently, `getMFdata`
+institutions and international orgainisations. Currently, the package
 consist of main wrapper functions for connecting **ECOS** (Bank of
 Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics
 Korea), **FRED** (Federal Reserve Bank of St. Louis), **IMF**
 (International Monetary Fund), **OECD** (Organisation for Economic
 Co-operations and Development), **BIS** (Bank of International
-Settlement). This package is still under development for balancing
-simplicity and flexibility.
+Settlement).
+
+The `getMFdata` was initially developed for internal use in Financial
+Supervisory Service to fetch macroeconomic data for stress-testing. This
+package is still under development and aims to take a balance between
+ease to use and flexibility to accommodate varioous data structures.
 
 ## Installation
 
@@ -30,9 +32,9 @@ install_github("morner75/getMFdata")
 
 ## Example
 
-This is a basic example which shows you how to retrieve data from
-various source. Some sources requires your API authentication before you
-can get access to data.
+The following are basic examples which show you how to retrieve data
+from BOK and BIS sources. Some sources requires your API authentication
+before you can get access to data.
 
 ``` r
 library(getMFdata)
