@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of getMFdata is to ...
+The goal of `getMFdata` package is to provide a tool of facilitating **retrieving Macro-Finance data from official APIs** in Korea's public institutions and international orgainisations. This package was initially developed for internal use in Financial Supervisory Service to fetch macroeconomic data for stress-testing. Currently, `getMFdata` consist of main wrapper functions for connecting **ECOS** (Bank of Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics Korea), **FRED** (Federal Reserve Bank of St. Louis), **IMF** (International Monetary Fund), **OECD** (Organisation for Economic Co-operations and Development), **BIS** (Bank of International Settlement). This package is still under development for balancing simplicity and flexibility.  
 
 ## Installation
 
@@ -31,18 +31,48 @@ install_github("morner75/getMFdata")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to retrieve data from various source. 
+Some sources requires your API authentication before you can get access to data.
 
 ```{r example}
-#library(getMFdata)
-## basic example code
+library(getMFdata)
+library(stringr)
+suppressMessages(library(dplyr))
+
+## 1. BOK ECOS data
+
+# ECOS API key
+ECOS_key <- Sys.getenv(x="ECOS_key")
+
+# Retrieve data 
+# data : 200Y001 국민소득통계 연간지표 실질경제성장율
+ecos_df <- getEcosData(ECOS_key,"200Y001","A", "1980","2022", "20101","?","?")
+head(ecos_df)
+
+
+## 2. BIS data
+
+# get BIS database
+bisDB <- getBisDB()  
+
+# Retrieve data : consumer price
+bisData <-        
+  bisDB %>% 
+  filter(name=="Consumer prices") %>% 
+  pull() %>% 
+  getBisData()
+
+# Data processing 
+CPI <- bisData %>% 
+  filter(str_detect(Series,"^A.+771$")) %>% 
+  select(REF_AREA, `Reference area`, matches("^20[0-9]{2}$"))
+
+head(CPI)
+
+
+
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this. You could also use GitHub Actions to re-render `README.Rmd` every time you push. An example workflow can be found here: <https://github.com/r-lib/actions/tree/v1/examples>.
-
-You can also embed plots, for example:
 
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+

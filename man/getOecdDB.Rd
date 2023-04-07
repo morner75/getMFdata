@@ -4,12 +4,10 @@
 \alias{getOecdDB}
 \title{Get OECD Database}
 \usage{
-getOecdDB(url, startTime)
+getOecdDB(url)
 }
 \arguments{
 \item{url}{The URL of the OECD database API}
-
-\item{startTime}{The starting time from which to retrieve data}
 }
 \value{
 a list containing the structure and dataSets of the OECD database
