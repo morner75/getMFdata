@@ -22,14 +22,14 @@ knitr::opts_chunk$set(
 ### Retrieving macro-financial data from offical APIs
 
 
-The goal of `getMFdata` package is to provide a tool of facilitating retrieving Macro-Finance data from official APIs in Korea's public institutions and international orgainisations.  Currently, the package consist of main wrapper functions for connecting **ECOS** (Bank of Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics Korea), **FRED** (Federal Reserve Bank of St. Louis), **IMF** (International Monetary Fund), **OECD** (Organisation for Economic Co-operations and Development), **BIS** (Bank of International Settlement). 
+The goal of the `getMFdata` package is to facilitate the retrieval of Macro-Finance data from official APIs in Korea's public institutions and international organizations. The package currently consists of main wrapper functions that enable connection to **ECOS** (Bank of Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics Korea), **FRED** (Federal Reserve Bank of St. Louis), **IMF** (International Monetary Fund), **OECD** (Organization for Economic Co-operation and Development), and **BIS** (Bank of International Settlement). 
 
-The `getMFdata` was initially developed for internal use in Financial Supervisory Service to fetch macroeconomic data for stress-testing.
-This package is still under development and aims to take a balance between ease to use and flexibility  to accommodate varioous data structures.  
+Initially developed for internal use in the Financial Supervisory Service to fetch macroeconomic data for stress-testing, the `getMFdata` package is still under development and aims to balance ease of use with flexibility to accommodate various data structures. 
+
 
 ### Installation
 
-You can install the development version of getMFdata like so:
+To install the package, please follow standard R package installation procedures.
 
 ``` r
 library(devtools)
