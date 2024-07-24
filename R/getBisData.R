@@ -9,7 +9,7 @@ getBisDB <- function(){
   bisDB_nodes <- bisDB_url %>%
     xml2::read_html() %>%
     rvest::html_nodes(xpath = "//a[contains(@href, 'zip')]")
-  tibble(name = rvest::html_text(bisDB_nodes), url = str_c('https://www.bis.org',rvest::html_attr(bisDB_nodes,"href")))
+  tibble(name = rvest::html_text(bisDB_nodes), url = str_c('https://data.bis.org',rvest::html_attr(bisDB_nodes,"href")))
 }
 
 #' Download and extract a BIS database file
