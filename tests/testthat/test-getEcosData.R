@@ -46,8 +46,8 @@ test_that("getEcosCode returns a tibble with expected columns", {
 test_that("getEcosData returns a data frame with TIME and DATA_VALUE", {
   skip_if(ecos_key == "", "ECOS_key not set")
   skip_on_cran()
-  # "722Y001": 통화량 통계, "MM": 월별, item_code1="0", item_code2="DDD"
-  result <- getEcosData(ecos_key, "722Y001", "MM", "202001", "202012", "0", "DDD", "", "")
+  # "722Y001": 한국은행 기준금리 및 여수신금리, "M": 월별, item_code1="0101000"(기준금리)
+  result <- getEcosData(ecos_key, "722Y001", "M", "202001", "202012", "0101000", "", "", "")
   expect_true(is.data.frame(result))
   expect_true(all(c("TIME", "DATA_VALUE") %in% names(result)))
   expect_gt(nrow(result), 0)

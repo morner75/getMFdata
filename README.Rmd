@@ -20,68 +20,204 @@ knitr::opts_chunk$set(
 [![R-CMD-check](https://github.com/morner75/getMFdata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/morner75/getMFdata/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
+`getMFdata` is an R package for retrieving macro-financial data from Korean public institutions and international organizations through their official APIs.
 
-### Retrieving macro-financial data from offical APIs
+| Source | Organization | Auth |
+|--------|-------------|------|
+| **ECOS** | Bank of Korea (한국은행) | API key required |
+| **FISIS** | Financial Supervisory Service (금융감독원) | API key required |
+| **IMF** | International Monetary Fund | Public |
+| **OECD** | Organisation for Economic Co-operation and Development | Public |
+| **BIS** | Bank for International Settlements | Public |
 
+Originally developed for stress-testing workflows at the Financial Supervisory Service, the package aims to provide a consistent interface across heterogeneous data sources.
 
-The goal of the `getMFdata` package is to facilitate the retrieval of Macro-Finance data from official APIs in Korea's public institutions and international organizations. The package currently consists of main wrapper functions that enable connection to **ECOS** (Bank of Korea), **FISIS** (Financial Supervisory Service), **KOSIS** (Statistics Korea), **FRED** (Federal Reserve Bank of St. Louis), **IMF** (International Monetary Fund), **OECD** (Organization for Economic Co-operation and Development), and **BIS** (Bank of International Settlement). 
+## Installation
 
-Initially developed for internal use in the Financial Supervisory Service to fetch macroeconomic data for stress-testing, the `getMFdata` package is still under development and aims to balance ease of use with flexibility to accommodate various data structures. 
-
-
-### Installation
-
-To install the package, please follow standard R package installation procedures.
-
-``` r
-library(devtools)
-install_github("morner75/getMFdata")
+```r
+# install.packages("devtools")
+devtools::install_github("morner75/getMFdata")
 ```
 
-### Example
+## API Keys
 
-The following are basic examples which show you how to retrieve data from BOK and BIS sources. 
-Some sources requires your API authentication before you can get access to data.
+ECOS and FISIS require API keys. Store them in your `.Renviron` file so they are available across sessions:
 
-```{r example}
+```r
+# Open .Renviron for editing
+usethis::edit_r_environ()
+```
+
+Add the following lines and restart R:
+
+```
+ECOS_key=your_ecos_key_here
+FISIS_key=your_fisis_key_here
+```
+
+- **ECOS key**: register at <https://ecos.bok.or.kr/api/>
+- **FISIS key**: register at <https://fisis.fss.or.kr/openapi/>
+
+---
+
+## ECOS — Bank of Korea
+
+```{r ecos-setup, message=FALSE}
 library(getMFdata)
-library(stringr)
-suppressMessages(library(dplyr))
+library(dplyr)
 
-## 1. BOK ECOS data
-
-# ECOS API key
-ECOS_key <- Sys.getenv(x="ECOS_key")
-
-# Retrieve data 
-# data : 200Y001 국민소득통계 연간지표 실질경제성장율
-ecos_df <- getEcosData(ECOS_key,"200Y001","A", "1980","2022", "20101","?","?")
-head(ecos_df)
-
-
-## 2. BIS data
-
-# get BIS database
-bisDB <- getBisDB()  
-
-# Retrieve data : consumer price
-bisData <-        
-  bisDB %>% 
-  filter(name=="Consumer prices") %>% 
-  pull() %>% 
-  getBisData()
-
-# Data processing 
-CPI <- bisData %>% 
-  filter(str_detect(Series,"^A.+771$")) %>% 
-  select(REF_AREA, `Reference area`, matches("^20[0-9]{2}$"))
-
-head(CPI)
-
-
-
+ECOS_key <- Sys.getenv("ECOS_key")
 ```
 
+### Search for statistics codes
 
+`ecosSearch()` searches across ~52,000 item entries (Korean and English names) bundled with the package — no API call needed.
 
+```{r ecos-search}
+# Find codes related to GDP
+ecosSearch("GDP") |> select(STAT_CODE, STAT_NAME, ITEM_CODE, ITEM_NAME, CYCLE) |> head(5)
+```
 
+```{r ecos-search-kr}
+# Korean keyword search
+ecosSearch("소비자물가") |> select(STAT_CODE, STAT_NAME, ITEM_CODE, ITEM_NAME, CYCLE) |> head(5)
+```
+
+### Browse available statistics tables
+
+```{r ecos-list, eval=FALSE}
+# Returns all ~600 statistics tables
+getEcosList(ECOS_key)
+```
+
+### Inspect item codes for a table
+
+```{r ecos-code}
+# Item structure for table 722Y001 (BOK base rate and lending/deposit rates)
+getEcosCode(ECOS_key, "722Y001") |> select(ITEM_CODE, ITEM_NAME, CYCLE, START_TIME, END_TIME)
+```
+
+### Retrieve data
+
+`getEcosData()` returns a two-column tibble of `TIME` and `DATA_VALUE`.
+
+```{r ecos-data}
+# BOK base rate, monthly, 2020–2024
+getEcosData(ECOS_key, "722Y001", "M", "202001", "202412", "0101000", "", "")
+```
+
+### Format date parameters with `EcosTerm()`
+
+`EcosTerm()` converts R date objects to the period strings ECOS expects.
+
+```{r ecos-term}
+EcosTerm(Sys.Date(), "A")   # annual:    e.g. "2026"
+EcosTerm(Sys.Date(), "Q")   # quarterly: e.g. "2026Q1"
+EcosTerm(Sys.Date(), "M")   # monthly:   e.g. "202603"
+EcosTerm(Sys.Date(), "D")   # daily:     e.g. "20260322"
+```
+
+---
+
+## FISIS — Financial Supervisory Service
+
+FISIS provides balance sheet and income statement data for Korean financial institutions.
+
+```{r fisis, eval=FALSE}
+FISIS_key <- Sys.getenv("FISIS_key")
+
+# List financial institutions
+getFsisInfos(FISIS_key, "companySearch")
+
+# List available statistics
+getFsisInfos(FISIS_key, "statisticsListSearch", item_code = "A")
+
+# Retrieve bank balance sheet data (annual, 2015–2023)
+getFsisData(FISIS_key,
+            finance_cd  = "0010001",  # all banks
+            list_no     = "SA053",    # balance sheet
+            account_cd  = "B",
+            term        = "Y",
+            start_month = "201501",
+            end_month   = "202312")
+```
+
+---
+
+## IMF — International Monetary Fund
+
+`getImfData()` queries the IMF IFS SDMX-JSON API. `processImfData()` converts the raw response to a tidy data frame.
+
+```{r imf, eval=FALSE}
+# CPI inflation (annual) for Korea and the US, 2010–2023
+imf_raw <- getImfData(
+  indicator_code = "PCPI_PC_CP_A_PT",
+  countries      = c("KR", "US"),
+  start_date     = "2010-01-01",
+  end_date       = "2023-01-01",
+  frequency      = "A"
+)
+
+processImfData(imf_raw)
+#> # A tibble: 28 × 3
+#>   country time  value
+#>   <chr>   <chr> <chr>
+#> 1 KR      2010  2.94 ...
+```
+
+---
+
+## OECD
+
+`getOecdDB()` fetches data from any OECD SDMX-JSON endpoint and returns raw `structure` and `dataSets` list components.
+
+```{r oecd, eval=FALSE}
+# Korean real GDP, quarterly seasonally adjusted
+url <- paste0(
+  "https://stats.oecd.org/SDMX-JSON/data/",
+  "QNA/KOR.B1_GE.LNBQRSA.Q/all?startTime=2000-Q1"
+)
+result <- getOecdDB(url)
+
+# Dimension labels
+result$structure$dimensions$observation
+# Observations
+result$dataSets[[1]]$observations |> head()
+```
+
+---
+
+## BIS — Bank for International Settlements
+
+`getBisDB()` scrapes the BIS full data sets page and returns a tibble of dataset names and download URLs. `getBisData()` downloads and reads a ZIP file into R.
+
+```{r bis-db}
+# List available BIS datasets
+db <- getBisDB()
+db
+```
+
+```{r bis-data, eval=FALSE}
+# Download consumer prices dataset
+cpi_raw <- db |>
+  filter(name == "Consumer prices") |>
+  pull(url) |>
+  getBisData(quiet = TRUE)
+
+# Filter: annual, all countries, CPI index (771)
+cpi_raw |>
+  filter(stringr::str_detect(Series, "^A.+771$")) |>
+  select(REF_AREA, `Reference area`, matches("^20[0-9]{2}$")) |>
+  head()
+```
+
+---
+
+## Bundled dataset
+
+`usdkrw` — monthly average USD/KRW exchange rate from January 1990 to the present, loaded lazily.
+
+```{r usdkrw}
+head(usdkrw)
+tail(usdkrw)
+```

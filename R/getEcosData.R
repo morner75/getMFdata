@@ -16,7 +16,7 @@
 #' @examples
 #' \dontrun{
 #' key <- Sys.getenv("ECOS_key")
-#' getEcosData(key, "722Y001", "MM", "202001", "202312", "0", "DDD", "", "")
+#' getEcosData(key, "722Y001", "M", "202001", "202312", "0101000", "", "", "")
 #' }
 #' @export
 getEcosData <- function(ECOS_key, stat_code, period, start_time, end_time, item_code1,
