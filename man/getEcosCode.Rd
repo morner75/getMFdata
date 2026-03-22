@@ -2,20 +2,26 @@
 % Please edit documentation in R/getEcosData.R
 \name{getEcosCode}
 \alias{getEcosCode}
-\title{Retrieve statistical codes from ECOS database}
+\title{Retrieve statistical item codes from ECOS}
 \usage{
-getEcosCode(ECOS_key = ECOS_key, STAT_CODE, lang = "kr")
+getEcosCode(ECOS_key = Sys.getenv("ECOS_key"), STAT_CODE, lang = "kr")
 }
 \arguments{
-\item{ECOS_key}{An ECOS API key}
+\item{ECOS_key}{An ECOS API key. Defaults to the \code{ECOS_key} environment variable
+(\code{Sys.getenv("ECOS_key")}).}
 
-\item{STAT_CODE}{A statistical code}
+\item{STAT_CODE}{A statistical table code (e.g. \code{"722Y001"})}
 
-\item{lang}{The language of the returned data (default: "kr")}
+\item{lang}{The language of the returned data (\code{'kr'} for Korean, \code{'en'} for English; default: \code{"kr"})}
 }
 \value{
-A tibble containing the retrieved statistical codes
+A tibble containing item codes and metadata for the given statistical table
 }
 \description{
-This function retrieves statistical codes from the ECOS database by sending a GET request to the ECOS API.
+This function retrieves statistical item codes from the ECOS database by sending a GET request to the ECOS API.
+}
+\examples{
+\dontrun{
+getEcosCode(Sys.getenv("ECOS_key"), "722Y001")
+}
 }

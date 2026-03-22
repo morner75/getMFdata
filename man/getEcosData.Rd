@@ -21,19 +21,19 @@ getEcosData(
 
 \item{stat_code}{character string containing specific statistical code}
 
-\item{period}{character string containing period of data (ex. 'DD', 'MM')}
+\item{period}{character string containing period of data (e.g. \code{'DD'} for daily, \code{'MM'} for monthly)}
 
 \item{start_time}{character string containing start date of data (YYYYMMDD)}
 
 \item{end_time}{character string containing end date of data (YYYYMMDD)}
 
-\item{item_code1}{character string containing first item code}
+\item{item_code1}{character string containing first item code (use \code{"?"} for all items)}
 
-\item{item_code2}{character string containing second item code}
+\item{item_code2}{character string containing second item code (use \code{""} if not needed)}
 
-\item{item_code3}{character string containing third item code}
+\item{item_code3}{character string containing third item code (use \code{""} if not needed)}
 
-\item{lang}{character string containing language of data ('kr' for Korean, 'en' for English)}
+\item{lang}{character string containing language of data (\code{'kr'} for Korean, \code{'en'} for English)}
 }
 \value{
 data frame containing TIME and DATA_VALUE columns of requested data
@@ -41,4 +41,10 @@ data frame containing TIME and DATA_VALUE columns of requested data
 \description{
 This function utilizes Bank of Korea's ECOS API to retrieve statistical data
 based on user input.
+}
+\examples{
+\dontrun{
+key <- Sys.getenv("ECOS_key")
+getEcosData(key, "722Y001", "MM", "202001", "202312", "0", "DDD", "", "")
+}
 }

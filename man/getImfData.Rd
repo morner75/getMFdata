@@ -7,19 +7,28 @@
 getImfData(indicator_code, countries, start_date, end_date, frequency)
 }
 \arguments{
-\item{indicator_code}{Indicator code for the financial data to be retrieved}
+\item{indicator_code}{Indicator code for the financial data to be retrieved
+(e.g. \code{"PCPI_PC_CP_A_PT"} for CPI inflation)}
 
-\item{countries}{List of ISO country codes for the countries to be included in the data}
+\item{countries}{Character vector of ISO 2-letter country codes
+(e.g. \code{c("KR", "US")}). Multiple countries are concatenated with \code{+}.}
 
-\item{start_date}{Starting date for the data (in the format "YYYY-MM-DD")}
+\item{start_date}{Starting date for the data in \code{"YYYY-MM-DD"} format}
 
-\item{end_date}{Ending date for the data (in the format "YYYY-MM-DD")}
+\item{end_date}{Ending date for the data in \code{"YYYY-MM-DD"} format}
 
-\item{frequency}{Time frequency for the data (e.g. "A" for annual, "Q" for quarterly)}
+\item{frequency}{Time frequency for the data: \code{"A"} for annual, \code{"Q"} for quarterly,
+\code{"M"} for monthly}
 }
 \value{
-a list with the requested financial data
+a list with the requested financial data (IMF SDMX-JSON structure)
 }
 \description{
 This function retrieves financial data from the International Monetary Fund (IMF) using the IMF Data Services API.
+}
+\examples{
+\dontrun{
+imf_raw <- getImfData("PCPI_PC_CP_A_PT", c("KR", "US"), "2015-01-01", "2022-01-01", "A")
+df <- processImfData(imf_raw)
+}
 }

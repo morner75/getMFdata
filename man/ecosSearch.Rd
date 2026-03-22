@@ -7,11 +7,19 @@
 ecosSearch(x)
 }
 \arguments{
-\item{x}{A character vector containing search keywords}
+\item{x}{A character vector containing search keywords (matched with AND logic)}
 }
 \value{
 A tibble containing the matching statistical codes
 }
 \description{
-This function searches for ECOS statistical codes in a preloaded dataset by matching keywords provided by the user.
+This function searches for ECOS statistical codes in a preloaded dataset by matching
+keywords provided by the user. The dataset (\code{EcosStatsList.rds}) must be present in
+\verb{inst/Rdata/} within the installed package.
+}
+\examples{
+\dontrun{
+ecosSearch(c("GDP", "실질"))
+ecosSearch("소비자물가")
+}
 }

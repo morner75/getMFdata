@@ -7,11 +7,20 @@
 processImfData(IMFdata)
 }
 \arguments{
-\item{IMFdata}{A list of financial data retrieved from the IMF API using the getImfdata function}
+\item{IMFdata}{A list of financial data retrieved from the IMF API using \code{\link[=getImfData]{getImfData()}}}
 }
 \value{
-a data frame with the processed IMF data
+a data frame with columns: \code{country} (ISO 2-letter code), \code{time} (period string),
+\code{value} (observed value as character)
 }
 \description{
-This function processes the financial data retrieved from the IMF API using the getImfdata function.
+This function processes the financial data retrieved from the IMF API using the \code{\link[=getImfData]{getImfData()}} function.
+It extracts the time series observations and returns them as a tidy data frame.
+}
+\examples{
+\dontrun{
+imf_raw <- getImfData("PCPI_PC_CP_A_PT", c("KR", "US"), "2015-01-01", "2022-01-01", "A")
+df <- processImfData(imf_raw)
+head(df)
+}
 }

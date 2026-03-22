@@ -7,12 +7,25 @@
 getOecdDB(url)
 }
 \arguments{
-\item{url}{The URL of the OECD database API}
+\item{url}{The full URL of the OECD SDMX-JSON API endpoint
+(e.g. \code{"https://stats.oecd.org/SDMX-JSON/data/QNA/KOR.B1_GE.LNBQRSA.Q/all?startTime=2000-Q1"})}
 }
 \value{
-a list containing the structure and dataSets of the OECD database
+a list with two elements:
+\describe{
+\item{structure}{metadata describing dimensions, attributes, and annotations}
+\item{dataSets}{the actual data observations}
+}
 }
 \description{
-This function retrieves data from an OECD database, formatted as a JSON object,
-given a specific starting time.
+This function retrieves data from an OECD SDMX-JSON API endpoint and returns
+the structure and dataset components.
+}
+\examples{
+\dontrun{
+url <- "https://stats.oecd.org/SDMX-JSON/data/QNA/KOR.B1_GE.LNBQRSA.Q/all?startTime=2000-Q1"
+result <- getOecdDB(url)
+str(result$structure)
+}
+
 }

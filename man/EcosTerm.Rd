@@ -7,13 +7,28 @@
 EcosTerm(time, type = c("A", "Q", "M", "D"))
 }
 \arguments{
-\item{time}{A time object.}
+\item{time}{A time object (e.g. \link[base:Dates]{base::Date}, \link[base:DateTimeClasses]{base::POSIXct}, or a string coercible to Date).}
 
-\item{type}{A character string that specifies the desired output format. It must be one of the following: "A" for annual, "Q" for quarterly, "M" for monthly, or "D" for daily. Default is "A".}
+\item{type}{A character string that specifies the desired output format. One of:
+\describe{
+\item{\code{"A"}}{Annual — returns 4-digit year (e.g. \code{"2023"})}
+\item{\code{"Q"}}{Quarterly — returns year and quarter (e.g. \code{"2023Q1"})}
+\item{\code{"M"}}{Monthly — returns year and month (e.g. \code{"202301"})}
+\item{\code{"D"}}{Daily — returns full date (e.g. \code{"20230101"})}
+}
+Default is \code{"A"}.}
 }
 \value{
 A character string containing the time value in the specified format.
 }
 \description{
-This function returns a character string containing a time value in a specified format.
+This function returns a character string containing a time value in a specified format
+suitable for use as \code{start_time} or \code{end_time} arguments in ECOS API functions.
+}
+\examples{
+EcosTerm(as.Date("2023-03-15"), type = "A")  # "2023"
+EcosTerm(as.Date("2023-03-15"), type = "Q")  # "2023Q1"
+EcosTerm(as.Date("2023-03-15"), type = "M")  # "202303"
+EcosTerm(as.Date("2023-03-15"), type = "D")  # "20230315"
+
 }

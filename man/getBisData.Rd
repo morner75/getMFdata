@@ -7,13 +7,21 @@
 getBisData(url, ...)
 }
 \arguments{
-\item{url}{the URL of the BIS database file to be downloaded}
+\item{url}{the URL of the BIS database ZIP file to be downloaded (obtain from \code{\link[=getBisDB]{getBisDB()}})}
 
-\item{...}{other arguments delivered to download.file function}
+\item{...}{additional arguments passed to \code{\link[utils:download.file]{utils::download.file()}} (e.g. \code{quiet = TRUE})}
 }
 \value{
-a data frame with the contents of the downloaded file
+a data frame with the contents of the downloaded CSV file
 }
 \description{
-This function downloads and extracts a BIS database file, then reads it into R as a csv file.
+This function downloads and extracts a BIS database file, then reads it into R as a CSV file.
+}
+\examples{
+\dontrun{
+db <- getBisDB()
+# Download the first available dataset
+df <- getBisData(db$url[1])
+head(df)
+}
 }

@@ -2,18 +2,26 @@
 % Please edit documentation in R/getEcosData.R
 \name{getEcosList}
 \alias{getEcosList}
-\title{retrieving stats list from ECOS}
+\title{Retrieve statistics table list from ECOS}
 \usage{
-getEcosList(ECOS_key = ECOS_key, lang = "kr")
+getEcosList(ECOS_key = Sys.getenv("ECOS_key"), lang = "kr")
 }
 \arguments{
-\item{ECOS_key}{ECOS API key}
+\item{ECOS_key}{ECOS API key. Defaults to the \code{ECOS_key} environment variable
+(\code{Sys.getenv("ECOS_key")}).}
 
-\item{lang}{language code (default is 'kr')}
+\item{lang}{language code (\code{'kr'} for Korean, \code{'en'} for English; default is \code{'kr'})}
 }
 \value{
-A tibble containing the statistics table list
+A tibble containing the statistics table list with columns: STAT_CODE,
+P_STAT_CODE, STAT_NAME, CYCLE, ORG_NAME, SRCH_YN
 }
 \description{
-retrieving stats list from ECOS
+Retrieve statistics table list from ECOS
+}
+\examples{
+\dontrun{
+getEcosList(Sys.getenv("ECOS_key"))
+getEcosList(Sys.getenv("ECOS_key"), lang = "en")
+}
 }

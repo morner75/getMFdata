@@ -7,8 +7,15 @@
 getBisDB()
 }
 \value{
-a tibble with the name and URL of each available dataset in the BIS database
+a tibble with columns \code{name} (dataset name) and \code{url} (download URL) for each
+available dataset in the BIS full data sets page
 }
 \description{
 This function extracts data from the Bank for International Settlements database and returns it as a tibble.
+}
+\examples{
+\dontrun{
+db <- getBisDB()
+head(db)
+}
 }

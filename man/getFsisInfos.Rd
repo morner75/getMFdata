@@ -13,13 +13,24 @@ getFsisInfos(
 \arguments{
 \item{api_key}{FSIS API key}
 
-\item{info_name}{Character string. Name of information to retrieve. Choices are 'companySearch', 'statisticsListSearch', or 'accountListSearch'.}
+\item{info_name}{Character string. Name of information to retrieve. One of
+\code{'companySearch'}, \code{'statisticsListSearch'}, or \code{'accountListSearch'}.}
 
-\item{item_code}{Character string. Code for the search parameter. Default is 'A'.}
+\item{item_code}{Character string. Code for the search parameter.
+For \code{companySearch}: partition division code (default \code{"A"} for all).
+For \code{statisticsListSearch}: large division code.
+For \code{accountListSearch}: list number.}
 }
 \value{
-A list with the retrieved information.
+A data frame with the retrieved information.
 }
 \description{
 Get information from FSIS API.
+}
+\examples{
+\dontrun{
+key <- Sys.getenv("FISIS_key")
+getFsisInfos(key, "companySearch")
+getFsisInfos(key, "statisticsListSearch", item_code = "A")
+}
 }
