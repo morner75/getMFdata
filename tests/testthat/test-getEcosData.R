@@ -15,6 +15,13 @@ test_that("ecosSearch returns a tibble when RDS file is present", {
   expect_s3_class(result, "tbl_df")
 })
 
+test_that("ecosSearch returns a tibble for multiple keywords", {
+  path <- system.file("Rdata", "EcosStatsList.rds", package = "getMFdata")
+  skip_if(!nzchar(path), "EcosStatsList.rds not installed; skipping")
+  result <- ecosSearch(c("GDP", "실질"))
+  expect_s3_class(result, "tbl_df")
+})
+
 # --- getEcosList ---
 
 test_that("getEcosList returns a tibble with expected columns", {
@@ -39,6 +46,12 @@ test_that("getEcosCode returns a tibble with expected columns", {
   result <- getEcosCode(ecos_key, "722Y001")
   expect_s3_class(result, "tbl_df")
   expect_true(all(c("STAT_CODE", "ITEM_CODE", "ITEM_NAME", "CYCLE") %in% names(result)))
+  expect_gt(nrow(result), 0)
+})
+
+test_that("getEcosCode stops with informative message on bad key", {
+  skip_on_cran()
+  expect_error(getEcosCode("INVALID_KEY_000", "722Y001"))
 })
 
 # --- getEcosData ---
@@ -46,8 +59,7 @@ test_that("getEcosCode returns a tibble with expected columns", {
 test_that("getEcosData returns a data frame with TIME and DATA_VALUE", {
   skip_if(ecos_key == "", "ECOS_key not set")
   skip_on_cran()
-  # "722Y001": 한국은행 기준금리 및 여수신금리, "M": 월별, item_code1="0101000"(기준금리)
-  result <- getEcosData(ecos_key, "722Y001", "M", "202001", "202012", "0101000", "", "", "")
+  result <- getEcosData(ecos_key, "722Y001", "M", "202001", "202012", "0101000", "", "", "kr")
   expect_true(is.data.frame(result))
   expect_true(all(c("TIME", "DATA_VALUE") %in% names(result)))
   expect_gt(nrow(result), 0)
@@ -55,5 +67,5 @@ test_that("getEcosData returns a data frame with TIME and DATA_VALUE", {
 
 test_that("getEcosData stops with informative message on bad key", {
   skip_on_cran()
-  expect_error(getEcosData("INVALID_KEY", "722Y001", "MM", "202001", "202012", "0", "DDD", "", ""))
+  expect_error(getEcosData("INVALID_KEY", "722Y001", "M", "202001", "202012", "0101000", "", "", "kr"))
 })
