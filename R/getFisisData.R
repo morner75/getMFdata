@@ -21,15 +21,14 @@ getFsisInfos <- function(api_key, info_name = c("companySearch", "statisticsList
                          item_code = "A"){
   info_name <- match.arg(info_name)
 
-  # Note: FISIS open API does not support HTTPS
   if (info_name == "companySearch"){
-    url <- paste0("http://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
+    url <- paste0("https://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
                   api_key, "&partDiv=", item_code)
   } else if (info_name == "statisticsListSearch"){
-    url <- paste0("http://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
+    url <- paste0("https://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
                   api_key, "&lrgDiv=", item_code)
   } else {
-    url <- paste0("http://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
+    url <- paste0("https://fisis.fss.or.kr/openapi/", info_name, ".json?lang=kr&auth=",
                   api_key, "&listNo=", item_code)
   }
   html <- GET(url)
@@ -66,8 +65,7 @@ getFsisInfos <- function(api_key, info_name = c("companySearch", "statisticsList
 #' @export
 getFsisData <- function(api_key, finance_cd = "0010001", list_no = "SA053", account_cd = "B", term = "Y",
                         start_month = "200801", end_month = "202012"){
-  # Note: FISIS open API does not support HTTPS
-  url <- paste0("http://fisis.fss.or.kr/openapi/statisticsInfoSearch.json?lang=kr&auth=", api_key,
+  url <- paste0("https://fisis.fss.or.kr/openapi/statisticsInfoSearch.json?lang=kr&auth=", api_key,
                 "&financeCd=", finance_cd, "&listNo=", list_no, "&accountCd=", account_cd,
                 "&term=", term, "&startBaseMm=", start_month, "&endBaseMm=", end_month)
 
