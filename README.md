@@ -18,9 +18,6 @@ official APIs.
 |-----------|--------------------------------------------------------|------------------|
 | **ECOS**  | Bank of Korea (한국은행)                               | API key required |
 | **FISIS** | Financial Supervisory Service (금융감독원)             | API key required |
-| **IMF**   | International Monetary Fund                            | Public           |
-| **OECD**  | Organisation for Economic Co-operation and Development | Public           |
-| **BIS**   | Bank for International Settlements                     | Public           |
 
 Originally developed for stress-testing workflows at the Financial
 Supervisory Service, the package aims to provide a consistent interface
@@ -230,93 +227,6 @@ getFsisData(FISIS_key,
             term        = "Y",
             start_month = "201501",
             end_month   = "202312")
-```
-
-------------------------------------------------------------------------
-
-## IMF — International Monetary Fund
-
-`getImfData()` queries the IMF IFS SDMX-JSON API. `processImfData()`
-converts the raw response to a tidy data frame.
-
-``` r
-# CPI inflation (annual) for Korea and the US, 2010–2023
-imf_raw <- getImfData(
-  indicator_code = "PCPI_PC_CP_A_PT",
-  countries      = c("KR", "US"),
-  start_date     = "2010-01-01",
-  end_date       = "2023-01-01",
-  frequency      = "A"
-)
-
-processImfData(imf_raw)
-#> # A tibble: 28 × 3
-#>   country time  value
-#>   <chr>   <chr> <chr>
-#> 1 KR      2010  2.94 ...
-```
-
-------------------------------------------------------------------------
-
-## OECD
-
-`getOecdDB()` fetches data from any OECD SDMX-JSON endpoint and returns
-raw `structure` and `dataSets` list components.
-
-``` r
-# Korean real GDP, quarterly seasonally adjusted
-url <- paste0(
-  "https://stats.oecd.org/SDMX-JSON/data/",
-  "QNA/KOR.B1_GE.LNBQRSA.Q/all?startTime=2000-Q1"
-)
-result <- getOecdDB(url)
-
-# Dimension labels
-result$structure$dimensions$observation
-# Observations
-result$dataSets[[1]]$observations |> head()
-```
-
-------------------------------------------------------------------------
-
-## BIS — Bank for International Settlements
-
-`getBisDB()` scrapes the BIS full data sets page and returns a tibble of
-dataset names and download URLs. `getBisData()` downloads and reads a
-ZIP file into R.
-
-``` r
-# List available BIS datasets
-db <- getBisDB()
-db
-#> # A tibble: 108 × 2
-#>    name                                                         url             
-#>    <chr>                                                        <chr>           
-#>  1 Locational banking statistics (CSV)16 Mar 2026               https://data.bi…
-#>  2 Locational banking statistics (CSV, flat)16 Mar 2026         https://data.bi…
-#>  3 Locational banking statistics (SDMX2.1 Compact)16 Mar 2026   https://data.bi…
-#>  4 Locational banking statistics (SDMX2.1 Generic)16 Mar 2026   https://data.bi…
-#>  5 Consolidated banking statistics (CSV)16 Mar 2026             https://data.bi…
-#>  6 Consolidated banking statistics (CSV, flat)16 Mar 2026       https://data.bi…
-#>  7 Consolidated banking statistics (SDMX2.1 Compact)16 Mar 2026 https://data.bi…
-#>  8 Consolidated banking statistics (SDMX2.1 Generic)16 Mar 2026 https://data.bi…
-#>  9 Debt securities statistics (CSV)16 Mar 2026                  https://data.bi…
-#> 10 Debt securities statistics (CSV, flat)16 Mar 2026            https://data.bi…
-#> # ℹ 98 more rows
-```
-
-``` r
-# Download consumer prices dataset
-cpi_raw <- db |>
-  filter(name == "Consumer prices") |>
-  pull(url) |>
-  getBisData(quiet = TRUE)
-
-# Filter: annual, all countries, CPI index (771)
-cpi_raw |>
-  filter(stringr::str_detect(Series, "^A.+771$")) |>
-  select(REF_AREA, `Reference area`, matches("^20[0-9]{2}$")) |>
-  head()
 ```
 
 ------------------------------------------------------------------------

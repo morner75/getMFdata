@@ -1,9 +1,9 @@
 Package: getMFdata
-Title: Retrieving data from BOK, IMF, OECD, BIS, etc. through official APIs
+Title: Retrieving data from BOK, FSS, etc. through official APIs
 Version: 0.0.0.9000
 Authors@R: 
     person("Junho", "Lee", , "morner@fss.or.kr", role = c("aut", "cre"))
-Description: This package retrieves official statistics from the Bank of Korea (BOK) and Financial Supervisory Service (FSS) in South Korea and international organisation including OCED, BIS and IMF. 
+Description: This package retrieves official statistics from the Bank of Korea (BOK) and Financial Supervisory Service (FSS) in South Korea.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -15,12 +15,8 @@ Imports:
     lubridate,
     magrittr,
     purrr,
-    readr,
-    rvest,
     stringr,
     tibble,
-    utils,
-    xml2,
     zoo
 Suggests: 
     testthat (>= 3.0.0)

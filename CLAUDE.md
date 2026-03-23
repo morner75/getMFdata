@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Package Overview
 
-`getMFdata` is an R package for retrieving macro-financial data from Korean public institutions and international organizations. It wraps APIs from ECOS (Bank of Korea), FISIS (FSS), KOSIS (Statistics Korea), FRED, IMF, OECD, and BIS.
+`getMFdata` is an R package for retrieving macro-financial data from Korean public institutions. It wraps APIs from ECOS (Bank of Korea) and FISIS (FSS).
 
 ## Common Commands
 
@@ -45,21 +45,15 @@ All data source modules follow the same pattern:
 |--------|-----------|
 | ECOS (Bank of Korea) | `getEcosData()`, `getEcosList()`, `getEcosCode()`, `ecosSearch()`, `EcosTerm()` |
 | FISIS (FSS) | `getFsisData()`, `getFsisInfos()` |
-| BIS | `getBisData()`, `getBisDB()` |
-| IMF | `getImfData()`, `processImfData()` |
-| OECD | `getOecdDB()` |
 
 ### API Authentication
 
 - **ECOS**: requires `ECOS_key` environment variable (Bank of Korea API key)
 - **FISIS**: `api_key` parameter passed directly to functions
-- **IMF, OECD, BIS**: public APIs, no key required
 
 ### Notable Implementation Details
 
 - **ECOS search** (`ecosSearch()`) reads from a pre-built RDS file at `Rdata/EcosStatsList.rds` rather than calling the API
-- **BIS** web-scrapes the dataset listing page, then downloads and extracts ZIP files to a temp directory
-- **IMF** uses SDMX-JSON format; multi-country queries concatenate codes with `+`
 - All Korean API responses require explicit UTF-8 encoding: `Encoding(res) <- "UTF-8"`
 - Dates for ECOS use `EcosTerm()` to format period strings (annual/quarterly/monthly/daily)
 
